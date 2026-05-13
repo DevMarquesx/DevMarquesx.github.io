@@ -528,11 +528,11 @@ footer span { color: var(--green); }
 <nav>
   <div class="nav-brand"><div class="nav-dot"></div>DevMarquesx</div>
   <ul class="nav-links">
-    <li><a onclick="scrollTo('sobre')">about</a></li>
-    <li><a onclick="scrollTo('skills')">skills</a></li>
-    <li><a onclick="scrollTo('cursos')">cursos</a></li>
-    <li><a onclick="scrollTo('projetos')">projects</a></li>
-    <li><a onclick="scrollTo('contato')">contact</a></li>
+    <li><a onclick="goTo('sobre')">about</a></li>
+    <li><a onclick="goTo('skills')">skills</a></li>
+    <li><a onclick="goTo('cursos')">cursos</a></li>
+    <li><a onclick="goTo('projetos')">projects</a></li>
+    <li><a onclick="goTo('contato')">contact</a></li>
   </ul>
 </nav>
 
@@ -549,7 +549,7 @@ footer span { color: var(--green); }
       <div class="typing-wrapper">&gt; <span id="typed-text"></span><span class="cursor"></span></div>
       <div class="hero-btns">
         <a class="btn btn-primary" href="https://github.com/DevMarquesx" target="_blank">⭐ GitHub</a>
-        <a class="btn btn-secondary" onclick="scrollTo('projetos')">📁 Projetos</a>
+        <a class="btn btn-secondary" onclick="goTo('projetos')">📁 Projetos</a>
         <a class="btn btn-secondary" href="mailto:kauamarquesrodrigues423@gmail.com">✉ Contato</a>
       </div>
     </div>
@@ -863,7 +863,7 @@ footer span { color: var(--green); }
 
 <script>
 // Nav scroll helper
-function scrollTo(id) {
+function goTo(id) {
   document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
 }
 

@@ -92,6 +92,7 @@ nav {
   0%,100% { box-shadow: 0 0 6px var(--green); }
   50%      { box-shadow: 0 0 18px var(--green), 0 0 36px var(--green-glow); }
 }
+
 .nav-links { display: flex; gap: .1rem; list-style: none; }
 .nav-links a {
   font-size: .68rem; color: var(--text2); text-decoration: none;
@@ -100,6 +101,16 @@ nav {
   border: 1px solid transparent;
 }
 .nav-links a:hover { background: var(--bg3); color: var(--text); border-color: var(--border2); }
+
+.menu-toggle {
+  display: none;
+  flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 5px;
+}
+.menu-toggle span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text); transition: .3s; border-radius: 2px;
+}
 
 /* ── HERO ── */
 .hero {
@@ -273,13 +284,24 @@ section {
 .edu-name { font-family: 'Syne', sans-serif; font-weight: 600; font-size: .85rem; color: var(--text); margin-bottom: .2rem; line-height: 1.35; }
 .edu-school { font-size: .71rem; color: var(--text3); }
 
+/* CONTRIB GRAPH RESPONSIVE */
 .contrib-section {
   background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1.2rem; margin-top: .7rem; overflow: hidden;
+  border-radius: var(--radius); padding: 1.2rem; margin-top: .7rem;
 }
 .contrib-title { font-size: .71rem; color: var(--text2); margin-bottom: .8rem; }
 .contrib-title span { color: var(--green); font-weight: 500; }
-.contrib-grid { display: flex; gap: 3px; overflow: hidden; }
+.contrib-wrap {
+  overflow-x: auto; /* Permite rolar no celular */
+  padding-bottom: 8px; /* Espaço para a scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) var(--bg);
+}
+.contrib-wrap::-webkit-scrollbar { height: 6px; }
+.contrib-wrap::-webkit-scrollbar-track { background: var(--bg); border-radius: 4px; }
+.contrib-wrap::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+.contrib-grid { display: flex; gap: 3px; min-width: max-content; }
 .contrib-week { display: flex; flex-direction: column; gap: 3px; }
 .contrib-day {
   width: 11px; height: 11px; border-radius: 2px;
@@ -384,12 +406,8 @@ section {
   background: rgba(63,185,80,.1); color: var(--green);
   border: 1px solid rgba(63,185,80,.2);
 }
-.status-progress {
-  background: rgba(255,190,50,.08); color: #fbbf24;
-  border: 1px solid rgba(255,190,50,.2);
-}
-.status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 
+.status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
 .course-tags { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .2rem; }
 .course-tag {
   font-size: .6rem; padding: .1rem .45rem; border-radius: 20px;
@@ -493,31 +511,56 @@ footer span { color: var(--green); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── RESPONSIVE ── */
+/* ── RESPONSIVE PARA DISPOSITIVOS MÓVEIS ── */
 @media (max-width: 900px) {
   .skills-grid { grid-template-columns: repeat(2,1fr); }
 }
+
 @media (max-width: 768px) {
+  /* Menu responsivo (Hambúrguer) */
   nav { padding: 0 1rem; }
-  .nav-links a { font-size: .62rem; padding: .3rem .5rem; }
-  .hero { min-height: auto; padding: 5rem 1rem 3rem; }
+  .menu-toggle { display: flex; }
+  .nav-links {
+    position: absolute; top: 56px; left: 0; right: 0;
+    background: rgba(10,13,18,.98); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column; gap: 0; padding: 0;
+    max-height: 0; overflow: hidden;
+    transition: max-height .3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .nav-links.active { max-height: 300px; }
+  .nav-links a { 
+    font-size: .85rem; padding: 1rem; border-radius: 0; 
+    border-bottom: 1px solid var(--border); width: 100%; display: block; text-align: center;
+  }
+  .nav-links li:last-child a { border-bottom: none; }
+  .nav-links a:hover { border-color: var(--border2); }
+
+  /* Ajustes Hero e Layout */
+  .hero { min-height: auto; padding: 6rem 1.2rem 3rem; }
   .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
-  .hero-title { font-size: 2.2rem; }
-  .terminal { display: none; }
-  section { padding: 3.5rem 1rem; }
-  .sec-title { font-size: 1.4rem; }
-  .about-grid { grid-template-columns: 1fr; }
-  .projects-grid { grid-template-columns: 1fr; }
-  .contact-grid { grid-template-columns: 1fr; }
-  .hero-btns { gap: .5rem; }
-  .btn { font-size: .67rem; padding: .5rem .9rem; }
+  .hero-title { font-size: 2.3rem; }
+  .terminal { display: none; } /* Ocultar terminal p/ poupar espaço no celular */
+  
+  section { padding: 4rem 1.2rem; }
+  .sec-title { font-size: 1.5rem; margin-bottom: 1.5rem; }
+  
+  /* Grids para 1 coluna */
+  .about-grid, .projects-grid, .contact-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .hero-btns { gap: .6rem; }
+  .btn { font-size: .7rem; padding: .6rem 1rem; }
 }
+
 @media (max-width: 580px) {
-  .skills-grid, .courses-grid, .idiomas-row { grid-template-columns: 1fr; }
-}
-@media (max-width: 480px) {
-  .nav-links { display: none; }
-  .hero-title { font-size: 1.9rem; }
+  /* Grids menores para 1 coluna */
+  .skills-grid, .courses-grid, .idiomas-row { grid-template-columns: 1fr; gap: 1rem; }
+  .hero-title { font-size: 2rem; }
+  .typing-wrapper { font-size: .75rem; }
+  .about-card, .edu-item, .skill-card, .course-card, .project-card, .contact-card {
+    padding: 1.2rem;
+  }
+  .project-name { font-size: .9rem; }
+  .contact-val { font-size: .7rem; }
 }
 </style>
 </head>
@@ -527,7 +570,14 @@ footer span { color: var(--green); }
 
 <nav>
   <div class="nav-brand"><div class="nav-dot"></div>DevMarquesx</div>
-  <ul class="nav-links">
+  
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <ul class="nav-links" id="nav-links">
     <li><a onclick="goTo('sobre')">about</a></li>
     <li><a onclick="goTo('skills')">skills</a></li>
     <li><a onclick="goTo('cursos')">cursos</a></li>
@@ -598,7 +648,9 @@ footer span { color: var(--green); }
       </div>
       <div class="contrib-section">
         <div class="contrib-title"><span id="contrib-count">0</span> contributions in the last year</div>
-        <div class="contrib-grid" id="contrib-grid"></div>
+        <div class="contrib-wrap">
+          <div class="contrib-grid" id="contrib-grid"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -857,9 +909,15 @@ footer span { color: var(--green); }
 <div id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</div>
 
 <script>
-// Nav scroll helper
+// Menu Responsivo Toggle
+function toggleMenu() {
+  document.getElementById('nav-links').classList.toggle('active');
+}
+
+// Nav scroll helper (e fechar menu ao clicar)
 function goTo(id) {
   document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('nav-links').classList.remove('active');
 }
 
 // Stars
@@ -975,5 +1033,3 @@ window.addEventListener('scroll', () => {
 </body>
 </html>
 ```eof
-
-A barra de Inglês agora está preenchida em 25%, igual à antiga barra de Espanhol. Mais alguma coisa que deseja ajustar?
